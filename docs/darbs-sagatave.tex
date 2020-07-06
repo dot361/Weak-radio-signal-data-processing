@@ -1,0 +1,558 @@
+\documentclass[12pt,paper=a4]{report}
+%%%% Maģistra/Bakalaura darba sagatave pēc VeA EPF nolikuma
+%%$% Versija 0.1
+%%%% Trūkst:
+%%%% - Pēc nolikuma lapu numerācijai jābūt augšpusē?! - to var panākt ar fancy header
+%%%% - Uzstādīt, lai \url rādītu arī kirilicu
+%%%% - Kā iegūt visu zīmējumu, tabulu skaitu dokumentā
+%%%% Vajadzētu papildināt ar:
+%%%% - Tabulu un atsauču piemēri
+%%%% - Formulu un atsauču piemēri
+%%%% - Pielikumu lapu
+
+
+%%%% Šeit izmantoti piemēri arī no Adriana Heidena un Arņa Voitkāna materiāli
+%%%% Darbam ir jālieto xelatex ar latviešu valodas atbalstu  (Ubuntu sistēmās - jābūt texlive-lang-latvian un texlive-xetex)
+%%%% Izveidoto tex failu (darbs.tex šai piemērā) 3x pēc kārtas (lai pareizi saliktos visas atsauces un satura rādītājis)
+%%%% izveido ar komandu xelatex:
+%%%% xelatex darbs.tex & xelatex darbs.tex & xelatex darbs.tex
+%%%% Rezultātam jābūt failā darbs.pdf
+
+% XeLaTeX atbalsts
+\usepackage{fontspec}
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\usepackage{wrapfig}
+
+
+\usepackage{rotating}
+\usepackage{tikz}
+
+
+% Valodu atbalsts
+\usepackage{polyglossia}
+\setdefaultlanguage{latvian}
+\setotherlanguages{english,russian,french}
+
+% Fonti -- var rakstīt sistēmas fontu nosaukumus
+% Parastais teksta fonts
+\setmainfont[Mapping=tex-text]{Times New Roman}%{LMRoman10}
+% Fonts krievu valodai, kurā ir arī krievu valodas burti
+\newfontfamily\russianfont{Times New Roman}
+% Šos fontus tālāk izmantos chapter virsrakstos un url'os (lai būtu kirilicas burti)
+
+\usepackage{setspace}
+
+% lai varam normāli rakstīt apakšvītras
+\usepackage{underscore}
+% Lai varam iekļaut attēlus
+\usepackage{graphicx}
+% Kurā vietā tiks meklēti attēli - relatīvais ceļs attiecībā pret dokumentu
+\graphicspath{{./PNG/}{./images/internet/}{./images/created/}}
+% Ar šiem PDF'ā būs saliktas saites un tām va uzlikt krāsu
+\usepackage{hyperref}
+\hypersetup{ colorlinks, citecolor=black, filecolor=black,linkcolor=black,urlcolor=black }
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{lipsum} %Lai ģenerētu nejaušus tekstus...
+\usepackage{listingsutf8}
+\usepackage{xcolor}
+
+\usepackage{svg}
+%\usepackage{inconsolata}
+\lstset{
+    language=bash, %% Troque para PHP, C, Java, etc... bash é o padrão
+    basicstyle=\ttfamily\small,
+    numberstyle=\footnotesize,
+    numbers=left,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    tabsize=2,
+    rulecolor=\color{black!30},
+    title=\lstname,
+    escapeinside={\%*}{*)},
+    breaklines=true,
+    breakatwhitespace=true,
+    framextopmargin=2pt,
+    framexbottommargin=2pt,
+    extendedchars=false,
+    inputencoding=utf8
+}
+
+\usepackage{float}
+
+%% Mainīt chapteru izskatu - centrēts un definētais sffamily fonts (skatīt augstāk)
+\usepackage{titlesec}
+\titleformat{\chapter}{\bfseries\LARGE\centering}{\thechapter}{1pc}{}
+\titlespacing*{\chapter}{0pt}{-50pt}{40pt}
+\newenvironment{conditions}
+  {\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
+  {\end{tabular}\par\vspace{\belowdisplayskip}}
+
+
+%% Pārdēvējam ``Literatūra`` par ``Izmantotās literatūras un avotu saraksts''.
+\addto\captionslatvian{
+\renewcommand{\contentsname}{SATURS}%
+\renewcommand\bibname{IZMANTOTĀS LITERATŪRAS UN AVOTU SARAKSTS}
+}
+
+%% Atraitņrindiņas un bāreņrindiņas ( widow orphan) vadība
+\clubpenalty10000
+\widowpenalty10000
+
+%% Visādas atkāpes - 1" (2.54 cm) atkāpe jau ir pēc noklusējuma, šeit tikai korekcijas
+%\setlength{\parskip}{1line}
+\setlength{\topmargin}{0cm}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{22.7cm}
+\setlength{\textwidth}{15cm}
+\setlength{\oddsidemargin}{0.5in}
+\setlength{\evensidemargin}{0.5in}
+%\setlength{\parindent}{0.25in}
+%\setlength{\parskip}{0.25in}
+
+%% uzliekam atkāpes arī nodaļu 1. rindkopas 1. rindai
+\usepackage{indentfirst}
+
+%Pārnesumiem - ļauj tiasīt lielākas starpas
+\hyphenpenalty=5000
+
+%% Nodaļu un apakšnodaļu numerācija
+\def\thechapter      {\arabic{chapter}.}
+\def\thesection      {\ifx\chapter\undefined{\arabic{section}.}\else  {\thechapter\arabic{section}.}\fi}
+\def\thesubsection   {\thesection\arabic{subsection}.}
+\def\thesubsubsection{\thesubsection\arabic{subsubsection}.}
+%\def\theparagraph    {\thesubsubsection\arabic{paragraph}.}
+%\def\thesubparagraph {\theparagraph\arabic{subparagraph}.}
+
+%% Pakotne lai saliktu automātisku figūru skaitīšanu
+\usepackage{totcount}
+
+\newcounter{nofappendices}
+\setcounter{nofappendices}{0}
+\regtotcounter{nofappendices}
+
+\newcounter{formulanum}
+\setcounter{formulanum}{0}
+\regtotcounter{formulanum}
+
+\newtotcounter{fignum}
+\def\oldfigure{} \let\oldfigure=\figure
+\def\figure{\stepcounter{fignum}\oldfigure}
+
+%defineejam atsauču skaitītāju
+\newtotcounter{citnum}
+\def\oldbibitem{} \let\oldbibitem=\bibitem
+\def\bibitem{\stepcounter{citnum}\oldbibitem}
+
+%% Attēlu numerācija
+\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}.}
+\renewcommand{\thetable}{\arabic{chapter}.\arabic{table}.}
+\usepackage{tocloft}
+%\renewcommand{\cftchapfont{\centering\sffamily}}
+%\tocloftpagestyle{fancy}
+\renewcommand{\cfttoctitlefont}{\hfill\Large\bfseries}
+\renewcommand{\cftaftertoctitle}{\hfill\hfill}
+\renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}} % for parts
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} % for chapters
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+% %% Sarakstam visus mainīgos
+% %% Mainīgie titullapai, defAutors tiek izmantots arī galvojumā
+
+\input{src/titullapas-dati} %šeit pārdefinējam savus mainīgos (atstāju iepriekšējās rindas, lai varētu redzēt pārdefinēšanu)
+\renewcommand\abstractname{ABSTRACT}
+%% pievienota anotācijas noformēšana
+%\usepackage{etoolbox}% http://ctan.org/pkg/etoolbox
+%\makeatletter
+%\patchcmd{\@makechapterhead}{\vspace*{50\p@}}{}{}{}% Removes space above \chapter head
+%\setafterchapterskip{1sp}
+%defineejam anotaacijas lapas, lai vareetu vienkaarshaak taas izmantot
+\def\abstract{
+  %\section*{\begin{center} \abstractname \end{center}} % start chapter
+
+\vspace*{-4\baselineskip}
+	\chapter*{\begin{center} \abstractname \end{center} } % start chapter
+	\vspace*{-2.5\baselineskip}
+  \addcontentsline{toc}{chapter}{\abstractname} % table of contents line
+  \markboth{\MakeUppercase{\abstractname}}{} % header mark
+}
+\def\endabstract{}%\clearpage
+
+%% Beidzot sākam rakstīt dokumentu
+\begin{document}
+
+%% Vislabāk nodaļas rakstīt kā atseviškus failus, kurus iekļauj ar input (.tex paplašinājums pats tiek pielikts klāt)
+% \input{src/mag-titullapa} %% visu titullapu ērtāk ir turēt datnē mag-titullapa.tex, bet te mēs tomēr visu rakstīsim vienā vietā:
+
+%%%% Titullapas sākums
+\input{src/titullapa} %pievienota titullapa, kura izveidota atsevišķā failā
+%%%% Titullapas beigas
+
+%%%% Satura rādītājs
+
+\tableofcontents
+
+% Removes the page counter
+\addtocontents{toc}{
+\protect\thispagestyle{empty}} 
+\thispagestyle{empty} 
+\newpage
+
+%%%% 1.5 līiniju atstarpe starp rindām
+\onehalfspace
+
+%%%% Nodaļa bez numerācijas
+\chapter*{ANOTĀCIJA}
+%%%% Lai uzrādītos satura rādītājā
+\addcontentsline{toc}{chapter}{ANOTĀCIJA}
+\begin{tabular}{@{}r@{}l@{}}
+\parbox[c]{0.3\textwidth}{\textbf{Darba nosaukums:}}&
+\parbox[t]{0.65\textwidth}{\defDarbaNosaukums} \\
+\parbox[c]{0.3\textwidth}{\textbf{Darba autors:}}&
+\parbox[t]{0.65\textwidth}{\defAutors} \\
+\parbox[c]{0.3\textwidth}{\textbf{Darba vadītāja:}}&
+\parbox[t]{0.65\textwidth}{\defZinVaditajs} \\
+\parbox[c]{0.3\textwidth}{\textbf{Darba apjoms:}}&
+\parbox[t]{0.65\textwidth}{\textcolor{black}{54} lapas, 3~tabulas,  \total{fignum}~attēli, 17~formulas, \total{citnum}~literatūras avoti, \total{nofappendices}~pielikumi} \\
+\parbox[c]{0.3\textwidth}{\textbf{Atslēgas vārdi:}}&
+\parbox[t]{0.65\textwidth}{ OH MĀZERI, KOMĒTAS, VĀJI SIGNĀLI, DATU APSTRĀDE, AUGSTAS VEIKTSPĒJAS SKAITĻOŠANA, ALGORITMI PARALĒLĀ REŽĪMĀ } \\
+&\\
+
+\end{tabular}
+%\total{nofimages} % ja nu gadiijumaa vajag custom counter
+
+Bakalaura darba mērķis ir veikt vāju radioastronomisko objektu datu apstrādi, to kalibrāciju,  trokšņa filtrēšanu, analizēt un apkopot iegūtos rezultātus. Primāri tiek novēroti OH māzeri Saules sistēmas komētu iekšienē, kuri, tuvojoties Saulei, aktivizējas un uzsāk OH molekulu izstarošanu. Balstoties uz to, ka komētas daļēji sastāv no ledus maisījumiem, novērojumi var sniegt informāciju par ūdeni kosmosā, kā arī ūdens rašanos uz Zemes. Darbā tiek arī novēroti un apstrādāti daži ārpus Saules sistēmas objekti, kā maiņzvaigznes un zvaigžņu veidošanās reģionu OH māzeri.  Lai to realizētu, izmantots RT-32 teleskops, ar kuru tiek veikti novērojumi diapazonā, kurā atrodas OH molekulu spektrālās līnijas - 1665MHz un 1667MHz.  Ņemot vērā, ka Ventspils Starptautiskais Radioastronomijas Centrā ar komētu novērojumiem darbs uzsākts tikai nesen, ir nepieciešams izveidot metodiku, kā plānot un apstrādāt iegūtos datus no minēto klasifikāciju radioastronomiskajiem avotiem. 
+
+Bakalaura darba praktiskajā daļā Python valodā tika izveidoti datu apstrādes metodikā iekļautie algoritmi (kalibrācijas, trokšņa mazināšanas un spektra iegūšanas, apvienojot vairāku novērojumu rezultātus), kas veic darbības paralēli, izmantojot Message Passing Interface protokolu, tādējādi efektīvāk pielietojot VSRC augstas veiktspējas skaitļošanas nodaļai pieejamos skaitļošanas resursus. Darbā algoritmi tiek aprakstīti un izvērtēti, kā arī tiek aprakstīti potenciālie uzlabojumi, ko iespējams veikt. Darbā tiek apskatīti arī potenciālie uzlabojumi un nākotnes plāni datu apstrādes metodikā.
+
+
+Darba rezultātā ir iegūta metodika, uz kuras balstoties, ir iespējams apstrādāt vāju starojuma astronomisko objektu radio astronomiskos datus. Bakalaura darba apraksta ietvaros tiek apskatīts metodikas pielietojums uz ATLAS Y4/2019 komētas, kā arī tiek apskatīti rezultāti maiņzvaigznei R Leonis Minoris un citiem novērotajiem objektiem.
+
+
+
+
+
+
+%Anotācija (lat. \textit{annotatio} – piezīme) ietver īsas ziņas par maģistra un bakalaura darba mērķi un risināmiem uzdevumiem, saturu, pielietotajām metodēm, galvenajiem izmantotajiem informācijas avotiem, pētījuma problēmām un svarīgākajiem rezultātiem, tabulu, attēlu skaitu u.c. ziņas. Anotācijā arī jānorāda, kādu zinātnisku vai praktisku jautājumu risināšanā darbs varētu būt izmantojams.
+
+%Šis ir paraugs, kurā ir izmantoti Adriana Heidena\footnote{A.Heidens bija VeA students} un Arņa Voitkāna materiāli\footnote{\url{http://blogi.lu.lv/arnivoit/latex-un-docbook-instalesana/latex-latviesu-valodas-atbalsta-konfiguresana-uz-linux-un-windows/}}
+
+%Ja pēdējā lapā ierakstīsim \verb+\label{LastPage}+, tad šeit anotācijā rakstot ar \verb+\pageref{LastPage}+ tiks ierakstīts kopējais lapu skaits. Ar kopējo zīmējumu un tabulu skaitu ir sarežģītāk, tos numurē nodaļas ietvaros un tāpēc ir jāizveido jauns skaitītājs - tas gan te netiek aprakstīts.
+
+%Bakalaura darbā ir \pageref{LastPage}  lapas, un \total{fignum} attēli.
+
+
+%{
+%% selectlanguage nav obligāti, ja raksta tikai tekstu un standarta fontā ir kirilicas simboli.
+%\selectlanguage{russian}
+%\chapter*{Аннотация}
+%\addcontentsline{toc}{chapter}{Аннотация}
+%В книге Дугласа Адамса «Путеводитель для путешествующих автостопом по галактике» «Ответ на главный вопрос жизни, вселенной и всего такого» должен был решить все проблемы Вселенной. Этого ответа с нетерпением ждали все разумные расы. Он был получен в результате семи с половиной миллионов лет  непрерывных вычислений на специально созданном компьютере Deep Thought. По утверждению компьютера, ответ был несколько раз проверен на правильность, но он может всех огорчить. Оказалось, что ответ на вопрос — «42». В ответ на недоумение представителей разумных рас, компьютер обосновал свой ответ тем, что формулировка вопроса была также весьма спорной.
+%% Anotācijās nav citātu, bet mēs tos pieliksim, deomnstrācijas pēc
+%% ievērojiet, ka te nav jaunas rindiņas sākums, jo nav tukšas rindas pa vidu
+%% pašu citāta atsauci jāieraksta arī beigās - \thebibliography sadaļā
+%\cite{wiki-ru}
+
+%Настоящая магистерская работа содержит \pageref{LastPage} страниц и \total{fignum} рисунков.
+%}
+
+%%%% 1.5 līiniju atstarpe starp rindām
+\onehalfspace
+{
+\selectlanguage{english}
+\chapter*{ABSTRACT}
+%%%% Lai uzrādītos satura rādītājā
+\addcontentsline{toc}{chapter}{ABSTRACT}
+
+\begin{tabular}{@{}r@{}l@{}}
+\parbox[c]{0.3\textwidth}{\textbf{Title:}}&
+\parbox[t]{0.65\textwidth}{\defDarbaNosaukumsEN} \\
+\parbox[c]{0.3\textwidth}{\textbf{Author:}}&
+\parbox[t]{0.65\textwidth}{\defAutors} \\
+\parbox[c]{0.3\textwidth}{\textbf{Academic Advisor:}}&
+\parbox[t]{0.65\textwidth}{\defZinVaditajs} \\
+\parbox[c]{0.3\textwidth}{\textbf{Volume of the work:}}&
+\parbox[t]{0.65\textwidth}{\textcolor{black}{54} pages, 3~tables,  \total{fignum}~images, 17~equations, \total{citnum}~literature sources, \total{nofappendices}~appendices} \\
+\parbox[c]{0.3\textwidth}{\textbf{Keywords:}}&
+\parbox[t]{0.65\textwidth}{ OH MASERS, COMETS, WEAK SIGNALS, DATA PROCESSING, HIGH PERFORMANCE COMPUTING, PARALLEL ALGORITHMS} \\
+&\\
+\end{tabular}
+
+
+
+The goal of this Bachelors degree thesis is to perform weak radioastronomic object data processing, which entails calibration, noise filtering and the analysis of results.  Primarily, OH masers from within comets in Solar system are observed, which upon getting closer to Sun activate and start emitting OH molecules, but observations on objects outside Solar system, such as stars and OH masers from star forming regions, are also performed. Considering that comets are mostly made of ice, observations may give us more insight about water in space, which includes the appearance of water on Earth. To perform the task, RT-32 radio telescope is used to observe the radio wave region of which spectral lines of OH molecules may be observed.  Since Ventspils International Radio Astronomy Centre has not performed comet observations until recently, there was no guidelines for data processing of such objects.  
+
+There are a number of algorithms for radio telescope data processing created during the writing period of this thesis. Algorithms are written using the Python programming language and are crucial for observation data transformation, calibration, signal noise reduction and data aggregation, some of which are parallelized using the Message Passing Interface to efficiently use the high performance computing resources of VIRAC. Algorithms are explained and the potential improvements are noted. Potential improvements on the guidelines of OH maser observation data processing are also looked at.
+
+%To use the high performance computing resources of VIRAC, an algorithm using MPI protocol is used for data processing is created along side with other data processing algorithms for signal noise reduction and result aggregation. Algorithms are explained and the potential improvements are noted.
+
+As a result of this thesis, a set of instructions for successful OH maser observation data processing is produced and examples from a couple of observed objects, such as comet ATLAS Y4/2019 and Mira varible star R Leonis Minoris are examined.
+%\total{nofimages} % ja nu gadiijumaa vajag custom counter
+
+%In the first novel and radio series, a group of hyper-intelligent pan-dimensional beings demand to learn the \textbf{Answer to the Ultimate Question of Life} from the supercomputer, Deep Thought, specially built for this purpose. It takes Deep Thought 7½ million years to compute and check the answer, which turns out to be\textbf{ 42}.  Unfortunately, The Ultimate Question itself is unknown.\cite{wiki-en}
+
+
+}
+
+
+
+%%%% Nodaļa bez numerācijas
+\chapter*{IZMANTOTIE SAĪSINĀJUMI UN TERMINI}
+\addcontentsline{toc}{chapter}{IZMANTOTIE SAĪSINĀJUMI UN TERMINI}
+
+%\textbf{Pievienot visus saīsinājumus un terminus, vairāk paskaidrot minētos}
+
+
+\textbf{MPI} - Message Passing Interface protokols, Bakalaura darba ietvaros tiek izmantots, lai veiktu komunikāciju starp vairākiem \textit{Python} procesiem gan vienas iekārtas, gan vairāku skaitļošanas mezglu ietvaros.
+
+\textbf{Novērojums} - Teleskopa fiziski pozicionēšana pret objektu uz noteiktu laiku un datu ierakstīšana laika periodā (parasti 2-4 stundas).
+
+\textbf{Skans} - Novērojuma fragments, kurā ietilpst visas fāzes aptuveni 2 minūšu novērojuma intervālā. 
+
+\textbf{FFT} - Fast Fourier Transform. Algoritms, kurš aprēķina diskrēto Furjē transformāciju, kura pārveido signālu frekvenču reprezentācijas modelī.
+
+\textbf{Ns} - Furjē transformācijas rezultējošais garums
+
+\textbf{VSRC} - Ventspils Starptautiskais Radioastronomijas Centrs
+
+\textbf{VIRAC} - Ventspils International Radio Astronomy Centre
+
+\textbf{Māzeris} - (Angliski \textit{maser}). Microwave Amplification by Stimulated Emission of Radiation. Dažu mikroviļņu starojuma pastiprināšanās sakarā ar inducētā starojuma rašanos komētas molekulās.
+
+%\textbf{Vājš objekts} - Objekts, precīzāk tā OH māzeris, kurš izstaro vāju radiosignālu
+
+\textbf{CSV} - Comma Separated Value. Faila formāts, kur vērtības atdalītas ar atdalīšanas simbolu, bieži - komatu.
+
+\textbf{Dat formāts} - Formāts, kur kolonnās ierakstītas radioastronomiskā novērojuma rezultātā iegūtās vērtības. 
+
+\textbf{Jēldati} - Binārais datu formāts, kur spektrs ierakstīts reālu un imagināru skaitļu virknē.
+
+%\textbf{Doplera efekts} - Frekvences izmaiņa, kas tiek radīta no avota un novērotāja pārvietošanos attiecībā vienam pret otru.
+
+\textbf{ACU} - Antenna Control Unit. Sistēma, kuru izmantojot tiek nodrošināta radioteleskopa pozicionēšana pret novērojuma objektu un pozīcijas datu žurnalēšanu.
+
+\textbf{SDR} - Software Defined Radio, iekārta, kura pārveido radioteleskopa novēroto analogo signālu par digitālo signālu.
+
+
+%%%  Sākas nodaļas
+\input{src/ch-ievads} %% Ērtāk visu ir rakstīt atsevišķos failos - ievads.tex un tad tos iekļaut ar input komandu
+
+
+%\input{src/analitiska-dala} %% Ērtāk visu failā analitiska-dala.tex
+%\chapter{Analītiskā daļa}
+%Pētījamā materiāla izklāsta \textbf{analītisko daļu} veido divas daļas (teorētiskā un praktiskā), kuras sadala nodaļās. Apjoma ziņā lielas nodaļas lietderīgi sadalīt apakšnodaļās.
+
+%\chapter{Radioastronomisko datu apstrādes metodika uzsākot bakalaura darbu}
+
+
+%\section{Datu apstrādes eksistējošā metodika}
+
+\input{src/teoretiska-dala}
+\input{src/praktiski}
+\input{src/datu-analize}
+\input{src/algoritma-izvertejums}
+%\input{src/nakotnes-plani}
+%Nodaļu un apakšnodaļu skaits netiek reglamentēts, tas izriet no darba apjoma un satura.
+%Problēmas teorētiskais izklāsts varētu aizņemt aptuveni 50\% no analītiskās daļas kopapjoma. Tomēr tas nedrīkst būt literatūras konspekts, bet gan attiecīgā temata izvērtējums.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%Nodaļai nevar būt tikai viena apakšnodaļa. Analītiskās daļas  uzdevums ir sistematizētā veidā sniegt pētāmās problēmas īsu teorētisku pamatojumu, autora pētījuma rezultātus, kas formulēti priekšlikumu veidā. Visās analītiskās daļas nodaļās (izņemot teorētisko pamatojumu) jābūt ilustratīvajam materiālam un aprēķiniem: konkrētiem plāna aprēķiniem, analītiskām tabulām, diagrammām u.tml. Problēmas teorētiskais izklāsts varētu aizņemt aptuveni 50\% no analītiskās daļas kopapjoma. Tomēr tas nedrīkst būt literatūras konspekts, bet gan attiecīgā temata izvērtējums.
+
+%\section{Datu apstrādes metodikas implementācija}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%Te ievietosim attēlu. Attēlam ir jāatrodas iepriekš definētajā mapē \verb+./PNG+. Šajā piemērā tiek izmantots attēls \verb+./PNG/Answer_to_Life.png+
+
+%Atbilde uz mūs interesējošo jautājumu ir parādīta \ref{fig:answer}~attēlā. Attēls rasts tīmeklī
+
+%\begin{figure}[ht] \centering
+% Norādam ievietojamo failu - paplašinājumu png var nerakstīt
+%\includegraphics[width=0.95\textwidth]{Answer-to-Life}
+%% pievienojam nosaukumu ar avotu un atsauci - label , ko var izmantot tekstā ar ref
+%\caption{Pati galvenā atbilde\cite{ans-picture}}  \label{fig:answer}
+%\end{figure}
+
+%\subsection{Par izmantoto literatūru un avotiem}
+
+%Izmantotās literatūras un avotu saraksts aptver literatūras avotus, kas izmantoti darba izstrādāšanā
+
+%Izmantotās literatūras un avotu saraksta veidošanas mērķis ir pateikties šo darbu autoriem par viņu ieguldījumu, parādīt darba lasītājam, no kurienes autors ir ņēmis attiecīgo informāciju un ļaut lasītājam pārbaudīt izmantoto informāciju no pirmavotiem.
+
+%Nedrīkst pieļaut plaģiātismu (cita autora darba uzdošanu par savu). Studentu, kuru darbs tiek atzīts par plaģiātu tiek atstādināti no pārbaudījuma un eksmatrikulē. Atkārtota darba aizstāvēšana tiek atļauta ne ātrāk kā pēc gada, un darbs ir jāraksta par jaunu tematu.
+
+%Bieži plaģiātismu izraisa nekorekta citēšana vai atsauču neievietošana darba tekstā. Ja darbā izmanto precīzas citu autoru frāzes vai teksta fragmentus, tad nepietiek tikai ar atsauci, šādos gadījumos jāizmanto citāts, kas jāliek pēdiņās. Atsauce ir obligāta arī tad, ka students pārfrāzē cita autora domas.
+
+
+\input{src/secinajumi-un-priekslikumi} %% Ērtāk visu failā secinajumi-un-priesklikumi.tex
+
+
+\bibliographystyle{unsrt}
+\selectlanguage{latvian}
+\bibliography{src/links,src/articles,src/books}	%to load the *.bib files ../articles,../books,
+\addcontentsline{toc}{chapter}{IZMANTOTĀS LITERATŪRAS UN AVOTU SARAKSTS}
+
+
+
+%% Te vajadzētu pielikumus
+\appendix
+\chapter{ATLAS C/2019 Y4 REDZAMĪBAS GRAFIKS}
+
+
+Attēlā apskatīts Atlas C/2019 Y4 komētas elevācijas vērtības, atkarībā no laika. Ar sarkanu iekrāsots potenciālo novērojumu laiku intervāls, kas komētai iespējams visu laiku, jo visas vērtības ir virs 15 grādus sliekšņa. Attēls tiek apskatīts, jo attēlo atšķirīgu komētu potenciālo novērojumu iespēju. Komētu novērojumi iespējami daudz vieglāk realizējami nekā \ref{fig:swan-el} attēlā apskatītās SWAN  C/2020 F8 novērojumi. Dati iegūti no NASA HORIZONS sistēmas.
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/created/atlas-visibility.png}
+\label{fig:atlas-visibility}
+\end{figure}
+
+%\begin{figure}[htb]
+%  \centering
+%  \begin{turn}{-90}
+%  \begin{minipage}{\textheight}
+%  \centering
+%    \includegraphics[width=\textwidth]{images/created/swan-bigger.png%}
+%  \label{fig:bigger-swan}
+%  \end{minipage}
+%  \end{turn}
+%\end{figure}
+
+
+
+
+
+
+\addtocounter{nofappendices}{1}
+\label{appendix:tituldati}
+%\lstinputlisting[firstline=6, lastline=15]{../codes/calcHomogInfModel.m}
+%\lstinputlisting[firstline=18, lastline=25]{README.md}
+
+\chapter{MPI ALGORITMA PIRMĀS VERSIJAS IZPILDES PROCESA ATTĒLOJUMS}
+
+Attēlā tiek apskatīts, kā notiek procesu komunikācija un datu apstrādes plūsma pirmajā MPI algoritma versijā. Procesi sadalīti celiņos, kur katrs celiņš atbilst katram procesam. Pirmais process veic datu kalibrāciju un apkopošanu, kamēr pārējie - jēldatu apstrādi. Process katrā solī tiek attēlots kā aplis, kura iekšienē tiek norādīts, kurš fails no kopējās novērojumu datu kopas tiek apstrādāts. 
+
+Katrā datu apstrādes ciklā, tiek apstrādāti 8 faili, kuru failu nosaukumus process nr. 1 nosūta pārējiem procesiem. Kad dati nolasīti, katrs process nosūta iegūtos rezultātus pirmajam procesam, kurš rezultātus nokalibrē un uzglabā atmiņā. Pēc kalibrācijas, tiek izsūtīta nākamā 8 failu kopa procesiem un process tiek atkārtots, līdz visi faili apstrādāti. Kā N zīmējumā tiek apzīmēts kopējais failu skaits.
+
+Procesa kodu var apskatīt \ref{appendix:codes} pielikuma repozitorijā, kur mapē \textit{scripts} atrodas fails \textit{MPI\_calibr\_v1.py}, kurā ir veikts pilns datu apstrādes process izmantojot pielikumā aprakstīto metodi.
+
+\begin{figure}[h!]
+  \centering
+  \begin{turn}{-90}
+  \begin{minipage}{\textheight}
+  \includesvg[width=\textwidth]{images/created/old-algorithm.svg}
+  \end{minipage}
+  \end{turn}
+\end{figure}
+
+\addtocounter{nofappendices}{1}
+\label{appendix:old-version}
+
+\chapter{MPI ALGORITMA FINĀLA VERSIJAS IZPILDES PROCESA ATTĒLOJUMS}
+
+Attēlā tiek apskatīts, kā notiek procesu komunikācija un datu apstrādes plūsma pēdējā MPI algoritma versijā. Procesi sadalīti celiņos, kur katrs celiņš atbilst katram procesam. Pirmais process veic datu kalibrāciju un apkopošanu, otrais process realizē procesu pārvaldību, trešais process - dat formāta failu apstrādi, kamēr pārējie - jēldatu apstrādi. Trešais process arī veic jēldatu apstrādi pēc dat formāta datu apstrādes beigšanas. 
+
+Process katrā solī tiek attēlots kā aplis, kura iekšienē tiek norādīts procesa statuss. Ja process ieņem vērtību "1", process ir brīvs un to var izmantot datu apstrādei.
+
+Balstoties uz faktoru, ka katra faila nolasīšanas laiks var nedaudz atšķirties, arī komunikācija starp procesiem var atšķirties. Piemērā pirmie procesi, kuri beidz datu nolasīšanu ir process nr. 8 un nr. 6, bet realitātē nav iespējams pateikt kurš process beigs datu apstrādi pirmais. Nosacījums izpildās arī pārējos soļos. Pārvaldības process izsūta visus failu ceļus datu apstrādes procesiem, bet kad visi faili izsūtīti, pārējiem procesiem aizsūta ziņu par datu apstrādes beigām. Procesi saņemot ziņu, nosūta datu apstrādē iegūtos rezultātos procesam 1, kurš veic tālāku datu apstrādi un beidz darbību.
+
+Procesa kodu var apskatīt \ref{appendix:codes} pielikuma repozitorijā, kur mapē \textit{scripts} atrodas fails \textit{MPI\_calibr\_v2.py}, kurā ir veikts pilns datu apstrādes process izmantojot pielikumā aprakstīto metodi.
+
+
+\begin{figure}[h!]
+  \centering
+  \begin{turn}{-90}
+  \begin{minipage}{\textheight}
+  \includesvg[width=\textwidth]{images/created/new-algorithm.svg}
+  \end{minipage}
+  \end{turn}
+\end{figure}
+
+
+
+
+\addtocounter{nofappendices}{1}
+\label{appendix:new-version}
+%\lstinputlisting{README.md}
+
+
+\chapter{BAKALAURA DARBA IETVAROS VEIDOTIE KODI}
+
+Ņemot vērā kodu apjomu, lai iegūtu labāku algoritmu uzskatāmību, kods nav apskatīts Bakalaura darba apraksta ietvaros, bet pieejams publiskā, Bakalaura autora veidotā \textit{github} repozitorijā. Repozitorijā ir divas direktorijas - \textit{scripts} un \textit{docs}, kur kodi apskatāmi \textit{scripts} direktorijā, bet Bakalaura gala apraksta Latex pirmkods, kopā ar darbā izmantotajiem vizuālajiem materiāliem, apskatāms \textit{docs} direktorijā.
+
+Piekļuve repozitorijam iespējama, izmantojot: \\
+\url{https://github.com/dot361/Weak-radio-signal-data-processing}, vai pēc pieprasījuma.
+
+
+\addtocounter{nofappendices}{1}
+\label{appendix:codes}
+
+\chapter*{GALVOJUMS}
+\addcontentsline{toc}{chapter}{GALVOJUMS}
+ Ar šo es, \defAutors, galvoju, bakalaura darbs ir izpildīts patstāvīgi un bez citu palīdzības. No svešiem pirmavotiem ņemtie dati un definējumi ir uzrādīti darbā. Šis darbs tādā vai citādā veidā nav nekad iesniegts nevienai citai pārbaudījumu komisijai un nav nekur publicēts.
+
+\vspace{2cm}
+\defGads.gada \rule{1cm}{0.2pt}.\rule{3cm}{0.2pt}
+\hspace{100pt} \rule{4cm}{0.2pt}
+\vspace{2cm} 
+
+
+ Es, \defAutors, atļauju Ventspils Augstskolai savu bakalaura darbu bez atlīdzības ievietot un uzglabāt Latvijas Nacionālās bibliotēkas pārvaldītā datortīklā Academia (www.academia.lndb.lv), kurā tie ir pieejami gan bibliotēkas lietotājiem, gan globālajā tīmeklī tādā veidā, ka ikviens tiem var piekļūt individuāli izraudzītā laikā, individuāli izraudzītā vietā.
+
+\hspace{180pt} Piekrītu \hspace{15pt} \rule{5cm}{0.2pt}
+
+\vspace{8pt}
+
+\hspace{180pt} Nepiekrītu \hspace{2pt} \rule{5cm}{0.2pt}
+
+\vspace{2cm}
+\defGads.gada \rule{1cm}{0.2pt}.\rule{3cm}{0.2pt}
+\vspace{2cm}
+
+
+\label{LastPage}
+%% Vēl jāpievieno atzīmes lapa
+%\pagebreak
+%% Šai lapai nevajag numerāciju
+%\pagestyle{empty}
+%\begin{center}
+% Bakalaura darbs aizstāvēts Valsts pārbaudījumu komisijas sēdē\\
+% \vspace{1em}
+%\end{center}
+%\defGads.gada \rule{1cm}{0.2pt} . \rule{3cm}{0.2pt}\\\\
+%un novērtēts ar atzīmi \rule{4cm}{0.2pt} \\\\\\
+%Protokols Nr. \rule{1cm}{0.2pt}\\\\\\
+%Valsts pārbaudījumu komisijas \\\\
+%priekšsēdētājs \rule{7cm}{0.2pt}.\\
+%\hspace*{5cm}\textit{\raisebox{1em}{paraksts}}
+
+
+\end{document}

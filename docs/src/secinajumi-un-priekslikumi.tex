@@ -1,0 +1,51 @@
+%% Nenumurēta nodaļa, kas uzrādās satura rādītājā
+\chapter*{SECINĀJUMI UN PRIEKŠLIKUMI}
+\addcontentsline{toc}{chapter}{SECINĀJUMI UN PRIEKŠLIKUMI}
+
+Darba gaitā ir sasniegts izvirzītais mērķis - veikt vāju radioastronomisko objektu datu apstrādi, to kalibrāciju,  trokšņa filtrēšanu, analizēt un apkopot iegūtos rezultātus. Veicot darbu, autors secināja:
+
+\begin{enumerate}
+
+    \item Lai realizētu datu apstrādes algoritmu, bija nepieciešams apgūt radioastronomisko novērojumu teorētiskos pamatus, kā arī Irbenes novērojuma stacijā lietoto infrastruktūru, ieskaitot datu formātus un ierakstīto informāciju.
+    \item Algoritmu izveide, balstoties uz zinātniskajiem rakstiem, nereti ir izaicinošs process, jo informācija  rakstā var tikt interpretēta dažādos veidos. Minētais faktors, kopā ar nepilnīgām zināšanām radioteleskopa darbībā, noveda pie grūtībām pilnībā izprast kalibrācijas procesa darbību, kas sarežģīja uzlabojumu ieviešanu.
+    \item Veicot datu apstrādi, nepieciešams pārliecināties par iepriekšējiem datu apstrādes procesiem, jo nepietiekama informācija noved pie kļūdainas tālākas apstrādes. Ņemot vērā, ka nav pieejamas specifiski aprakstītas dokumentācijas par iepriekšējiem datu apstrādes procesiem, tas noveda pie apjukuma situācijās, kur, piemēram, tika apskatīta Doplera kompensācija, kas daļēji jau bija realizēta datu ierakstīšanas brīdī.
+    \item Apskatot vairākas apstrādes metodes, dažkārt ir vērts ieguldīt ilgāku laiku metodes izpratnei, jo metode var sniegt pielietojumu dažādās jomās. Tas pierādījās apskatot veivletu transformāciju, kuru bija iespējams pielietot ne tikai stohastiskā trokšņa samazināšanā, bet arī sistēmas temperatūru bojāto vērtību pareģošanā.
+    \item Apstrādājot datus, ir nepieciešams izvērtēt potenciālās paralelizācijas iespējas, kā arī izpētīt vairākus iespējamos variantus paralelizācijas realizācijai. Izmantojot MPI paralelizāciju, vairāku stundu ilgā datu apstrāde tika aizstāta tikai ar maksimāli pus stundu garu datu apstrādes procesu.
+    \item Veicot algoritmu paralelizāciju, ir nepieciešams ņemt vērā algoritmisko nestabilitāti. Vienmēr jāpārliecinās, ka izsauktais process pilda instrukcijas, kas procesam ierādītas. Pat ja algoritms ir paralelizēts, tam ir iespējams veikt dažādus vienkāršus uzlabojumus, kā piemēram ciklu vektorizēšanu, kas noved pie daudz labākas veiktspējas. Bakalaura darbā tas izpaudās algoritma iterāciju salīdzināšanā, kur, lai gan pirmās iterācijas algoritms veica mazāk darba, izpildījās lēnāk par pēdējās iterācijas algoritmu. 
+    \item Vāju radioastronomisko objektu datu apstrādes metodes dažkārt sniedz nepārliecinošus rezultātus, līdz ar to ir nepieciešams salīdzināt iegūtos rezultātus ar citu metožu rezultātiem, piemēram, ar rezultātiem no optiskajiem novērojumiem.
+    \item Veicot zinātnisku algoritmu izveidi, nepieciešams konsultēties ar jomas ekspertiem rezultātu analizēšanai, kā arī potenciālu uzlabojumu ieteikumiem. Radioastronomisko datu apstrādes rezultāti, bieži ir sarežģīti uzskatāmi, jo ne vienmēr ir skaidrs, kā izskatīsies rezultāts, taču izmantojot metodes no iepriekšējās pieredzes, ir iespējams efektīvāk apstrādāt datus, kā arī gūt pārliecību par iegūtajiem rezultātiem.   
+    \item Iegūstot datus no ārējiem avotiem, ir jāpārliecinās par avotu uzticamību, kā arī nepieciešams būt pārliecinātam, ko iegūtie dati reprezentē. Resursi, kā piemēram, NASA HORIZONS satur ļoti daudz informācijas, taču dažkārt datu daudzums izraisa apjukumu. Tiek ierakstītas dažādas ātruma vērtības, atkarībā no citiem objektiem, rezultātā, iegūstot līdzīgas, bet tomēr, nedaudz atšķirīgas vērtības. Apskatot arī datus, kā pareģotā objekta spilgtuma vērtība, bieži dažādos resursos ir atšķirīga, lai gan objekts ir viens. Dati iegūti no dažādām datubāzēm un bieži tiek izmantoti atšķirīgi algoritmi, lai iegūtu pareģotas vērtības, kas izraisa atšķirīgu gala rezultātu.
+    %\item Infrastruktūra bieži ir nedokumentēta vai nepilnīgi dokumentēta, kas sarežģī jaunu algoritmu izveidi vai vecu algoritmu uzlabojumus.
+    \item Populārās programmēšanas valodās, kā piemēram Python vai C, populārām problēmām bieži ir augstas veiktspējas risinājumi, kurus izmantojot, kopējā algoritma veiktspēja var vairākas reizes uzlaboties.
+    \item Vāju radioastronomisku objektu novērošana ir sarežģīts darbs, līdz ar to, ir nepieciešams pārbaudīt vairākas un atšķirīgas signālu apstrādes metodes uz kādiem konkrētiem datiem, lai pārliecinātos par iegūto rezultātu pareizību.
+    
+    \item Veicot datu apstrādi, ir nepieciešams aprakstīt iegūtos rezultātus dokumentācijā, kas autoram ļauj labāk izprast kopējos rezultātus, kā arī atskaites atļauj citiem pētniekiem labāk izprast algoritmiski realizētos problēmu risinājumus.
+    
+    
+
+    
+\end{enumerate}
+
+Līdz ar to, no iepriekš izdarītajiem secinājumiem, autors sniedz šādus priekšlikums:
+\begin{enumerate}
+    
+    \item  Izstrādātā algoritma procesu komunikācijas realizācija efektīvākā veidā nodrošinātu daudz labāku veiktspēju datu apstrādes algoritma izpildē. To iespējams realizēt, izmantojot statiskas instrukcijas noteiktam procesu daudzumam vai ieviešot papildus pārvaldes procesus.
+    \item Algoritma veiktspēju iespējams optimizēt, izmantojot zemāka līmeņa valodu, taču izstrādes process prasītu ilgu laiku, jo liela daļa funkciju realizētas izmantojot \textit{Python} pakotnes.
+    \item Bakalaura darba ietvaros realizēto Doplera nobīdes aprēķināšanu Saules sistēmas objektiem būtu nepieciešams izvērtēt, jo iegūtie rezultāti ir nepārliecinoši.
+    \item Autors iesaka apskatīt papildus datu apstrādes metodes, piemēram,  Karhunen—Loève Transform metodi Furjē transformācijas vietā, kas, iespējams, sniegtu precīzākus rezultātus, jo metode paredzēta vāju signālu apstrādei, izmantojot nejaušu skaitļu un statistikas elementu aprēķinus. Transformācijas rezultātā, varētu būt iespējams samazināt stohastiskā trokšņa ietekmi, apstrādātajos rezultātos.
+    \item Papildus apskatītajiem novērojuma datiem, ir nepieciešams apskatīt objekta Stoka parametrus, kas atļautu iegūt vairāk informāciju par objekta polarizācijas radiācijas stāvokli un objekta magnētiskā lauka stāvokli.
+
+    \item Ņemot vērā faktoru, ka radioteleskops ir ļoti kompleksa sistēmu kopa, novērojumu laikā var rasties inženiertehniskas problēmas. Lai gan biežāko problēmu risinājumi ir ieviesti, ir nepieciešams padziļināti apskatīt problēmu sekas uz iegūtajiem datiem, kā arī veikt attiecīgās pārbaudes.
+    \item Komētas ir ieteicams novērot, izmantojot vairākas stacijas, gan optiskajā diapazonā, gan izmantojot citu radioteleskopu staciju datus, veidojot VLBI tipa novērojumos, jo tas sniegtu daudz vairāk datu, kā arī novērstu potenciālās inženiertehniskās problēmas.
+\end{enumerate}
+
+%\begin{enumerate}
+%\item \textbf{Secinājumi un priekšlikumi} jāraksta tēžu veidā.
+%\item Secinājumiem jāatspoguļo svarīgākās atziņas, kas izriet no pētījuma, satur atbildes uz ievadā izvirzīto mērķi un uzdevumiem.
+%\item Secinājumos jāpaskaidro veiktā pētījuma tautsaimnieciskā, zinātniskā vai praktiskā nozīme un autora personīgais veikums uzdevuma risināšanā.
+%\item Secinājumus nedrīkst pamatot ar datiem un faktiem, kas nav minēti darbā.
+%\item Secinājumos nav pieļaujami citāti no citu autoru darbiem, tajos jāatspoguļo tikai darba autora domas, spriedumi, atziņas.
+%\item Priekšlikumiem jāizriet no darbā veiktajiem pētījumiem un izdarītajiem secinājumiem, tiem jābūt konkrētiem un pamatotiem.
+%\item Priekšlikumos apkopo arī darbā pamatotās rekomendācijas trūkumu novēršanai.
+%\item Secinājumi un priekšlikumi jānumurē ar arābu cipariem.
+%\end{enumerate}

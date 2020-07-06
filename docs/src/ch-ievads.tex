@@ -1,0 +1,56 @@
+\chapter*{IEVADS}
+\addcontentsline{toc}{chapter}{IEVADS}
+
+Komētas var uzskatīt par planetāro sistēmu veidošanās paliekām, līdz ar to, komētu struktūras izpēte sniedz ieskatu elementu kompozīcijā, no kuras sastāvēja pirmatnējie zvaigžņu miglāji,no kuriem ir veidojusies arī Zeme. Komētas pētījumus var veikt vairākos veidos, piemēram, veicot optiskus novērojumus,nosūtot zondes, kas pēta komētu struktūru, vai arī komētas novērot radio frekvenču diapazonā. Tuvojoties Saulei vai kādam citam objektam, kurš izstaro lielu daudzumu elektromagnētisko radiāciju, komētās esošais ledus uzsilst un tiek uzsāktas dažādas ķīmiskas reakcijas. Balstoties uz ķīmiskajām reakcijām, komētās aktivizējās OH māzeri un uzsāk OH molekulu izstarošanu, kuru iespējams novērot 1665MHz un 1667MHz frekvencēs, izmantojot radioteleskopu. Diemžēl komētas OH māzera starojums ir ļoti vājš radio frekvencēs, tipisku komētu OH māzeru enerģijas plūsma mērāma no 4 līdz 40 mJy.
+
+Lai veiktu novērojumus, tiek izmantots VSRC īpašumā piederošais RT-32 radioteleskops, kura L(1 – 2 GHz) joslas frekvenču uztvērējs kopā ar Cassegrain antenu, veido trīs spoguļu sistēmu \cite{telescope-sefd}, kas atļauj veikt ļoti vāju starojumu novērojumus, ieskaitot komētas OH māzeru novērojumus. VSRC radioteleskops piemērots komētu novērošanai, jo novērojumus ir iespējams veikt 360 grādu leņķī, līdz ar to, ir nepieciešams tikai pārliecināties, vai objekts ir virs horizonta.
+
+Radioastronomijā vāju radioastronomisku objektu datu apstrāde ir sarežģīts process, jo apkārtējie avoti ar savu starojumu ļoti ietekmē rezultējošo signālu, kas veido nepieciešamību izveidot pēc iespējas efektīvākas metodes signāla apstrādei un trokšņa filtrēšanai. 
+
+Lai realizētu Bakalaura darbā izvirzīto mērķi - veikt vāju radioastronomisko objektu datu apstrādi, to kalibrāciju, trokšņa filtrēšanu, analizēt un apkopot iegūtos rezultātus, tiek ieviesti sekojošie uzdevumi:
+
+\begin{enumerate}
+    \item apgūt radioastronomisko novērojumu infrastruktūru un iegūt izpratni par datu tipiem, kuri tiek izmantoti novērojumu datu saglabāšanā;
+    \item apgūt signālu apstrādes pamatus un implementēt novērojumu datu apstrādes algoritmus;
+    \item iepazīties ar pieejamiem datu avotiem komētu novērojumu plānošanai un izveidot algoritmus datu saglabāšanai un nolasīšanai no minētajiem avotiem;
+    \item apkopot visu novērojumu plānošanas un datu apstrādes procesu vienotā dokumentā, uz kuru balstoties, iespējams veikt vāju radioastronomisku datu apstrādi;
+    \item izstrādāt metodiku, ar kuru var veikt vāju starojumu datu apstrādi;
+    \item izstrādāt programnodrošīnājumu, kas veic datu apstrādi, tai skaitā datu kalibrāciju, trokšņa filtrēšanu un spektru apkopošanu;
+    \item papildināt izstrādāto programnodrošinājumu, iekļaujot paralelizāciju.
+\end{enumerate}
+
+Darbu uzsākot, tika apskatīa eksistējošo dokumentāciju novērojumu veikšanas infrastruktūrai (\cite{telescope-spec}, \cite{sdrspec},  \cite{vlsr}, \cite{telescope-sefd}, \cite{nancay}), kā arī apskatīti algoritmus, kuri tiek izmantoti, lai realizētu datu ierakstīšanu.
+
+Lai izpildītu otro uzdevumu, Bakalaura darba ietvaros tiek realizēta datu nolasīšana un apstrādāšana ar Furjē transformāciju un Blackman-Harris (\cite{overlapping}, \cite{blackman-harris}) funkciju, datu kalibrācija, bojātu datu detektēšana, kā arī vairāku novērojumu datu apvienošana. Novērojumu plānošanai, kā arī rezultātu apvienošanai tiek izmantoti algoritmiski iegūtie dati no NASA HORIZONS JPL \cite{horizons} datubāzes.
+
+Ņemot vērā, ka datu apstrāde ir resursietilpīgs process, bija nepieciešams apskatīt un implementēt paralelizācijas iespējas izmantojot Message Passing Interface protokolu \cite{mpi-docs}. MPI algoritms tika implementēts divās iterācijās un Bakalaura darba apraksta ietvaros tiek apskatīts to darbību pamatprincipi.
+
+Novērojumu apstrādes process no sākuma līdz beigām tiek aprakstīts aprakstā, apskatot gan teorētisko pamatojumu darbībām (\cite{kepler-elements}, \cite{unbiased}), gan iegūtos rezultātus, kā arī tiek apskatīti nākotnes plāni un metodikas potenciālie uzlabojumi. 
+
+
+Bakalaura darba apraksts strukturēta 3 nodaļās, kur pirmajā nodaļā tiek aprakstīs metodikas teorētiskais process, kā arī aprakstītas metodes procesu implementācijai. Otrajā nodaļā metodika tiek pielietota radioastronomisku novērojumu datiem un tiek attēlots piemērs metodikas izmantošanai. Lai izvērtētu augstas veiktspējas skaitļošanas algoritmu, kurš ir viens no primārajiem mērķiem darbā, tiek ieviesta trešā nodaļa, kur tiek veikti veiktspējas testi un aprakstītas algoritma potenciālie uzlabojumi un nepilnības.
+
+Bakalaura darba ietvaros veidotie algoritmi ir pieejami repozitorijā pielikumā \ref{appendix:codes}, kur pieejams arī Bakalaura darba apraksta pirmkods, kā arī Bakalaura darba izstrādes laikā iegūto rezultātu augstākas izšķirtspējas attēli.
+
+%Lai gan VSRC tiek apstrādāti signāli no dažādiem astronomiskiem objektiem, neviena nodaļa nav uzņēmusies pētīt objektus, kuri izstaro vājus radioastronomiskus signālus, līdz ar to, nav izveidota metodika vājo signālu apstrādei.
+
+
+
+%Par vājiem signāliem bakalaura darba ietvaros tiek uzskatītas komētas Saules sistēmā, kā arī attālas maiņzvaigznes, kuras tiek izmantotas, kā kalibratori komētu pētījumos. Minētajos objektos, ir iespējams novērot OH māzeru spektrālās līnijas 1665-1667 Hz diapazonā. Lai novērotu OH molekulu starojumu, tiek izmantots Irbenes RT-32 radioteleskops ar L-band uztvērēju, kurš kopā ar Cassegrain antenu veido trīs spoguļu sistēmu.
+
+
+
+%Ievadā ir jāietver:
+
+
+
+
+%\begin{itemize}
+%\item temata aktualitātes pamatojums;
+%\item darba mērķis;
+%\item darba mērķa sasniegšanai veicamo uzdevumu formulējums;
+%\item izmantojamo pētīšanas metožu un paņēmienu uzskaitījums;
+%\item literatūras un avotu grupu uzskaitījums (piemēram, speciālā ekonomiskā literatūra, valsts statistikas dati, nepublicētie materiāli no uzņēmuma arhīva u.c.);
+%\item darba struktūras apraksts;
+%\item pētījuma temata un perioda norobežojums (ja tas nepieciešams).
+%\end{itemize}
